@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+}
+
+body {
+  font-family: var(--font-);
+  background-color: var(--morado-mega-oscuro); /* ajusta a tu gusto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.form-container {
+  position: relative;
+  width: 40rem;
+  padding: 3rem;
+  border-radius: 1rem;
+  background-color: rgba(17, 24, 39, 1);
+  color: rgba(243, 244, 246, 1);
+
+  /* borde degradado */
+  border: 0.3rem solid transparent;
+  background-image:
+    linear-gradient(rgba(17,24,39,1), rgba(17,24,39,1)),
+    linear-gradient(45deg, #a78bfa, #f472b6, #34d399);
+  background-origin: padding-box, border-box;
+  background-clip: padding-box, border-box;
+
+  /* glow */
+  box-shadow: 0 0 2rem rgba(167, 139, 250, 0.4);
+}
+
+.form-container::before {
+  content: '';
+  position: absolute;
+  top: -0.4rem; left: -0.4rem; right: -0.4rem; bottom: -0.4rem;
+  border-radius: 1.4rem;
+  background: linear-gradient(45deg, #a78bfa, #f472b6, #34d399);
+  filter: blur(8px);
+  opacity: 0.6;
+  z-index: -1;
+}
+
+/* TÍTULO */
+.title {
+  text-align: center;
+  font-size: 2.4rem;
+  line-height: 3rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+/* FORMULARIO */
+.form {
+  margin-top: 2rem;
+}
+
+/* GRUPO DE INPUT */
+.input-group {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+}
+
+.input-group label {
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  color: rgba(156, 163, 175, 1);
+}
+
+/* WRAPPER ICONO + INPUT */
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  padding-right: 4rem; /* espacio para el icono */
+  font-size: 1.8rem;
+  color: rgba(243, 244, 246, 1);
+  background: transparent;
+  border: none;
+  border-bottom: 0.3rem solid rgba(55, 65, 81, 1);
+  transition: border-color 0.3s;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-bottom-color: rgba(167, 139, 250, 1);
+}
+
+.input-icon {
+  position: absolute;
+  right: 1.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: rgba(156, 163, 175, 0.8);
+  pointer-events: none;
+}
+
+/* BOTÓN REGISTRARSE */
+.sign {
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  color: rgba(17, 24, 39, 1);
+  background-color: rgba(167, 139, 250, 1);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.sign:hover {
+  background-color: rgba(147, 119, 230, 1);
+}
+
+/* YA TIENES CUENTA */
+.signup {
+  text-align: center;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  color: rgba(156, 163, 175, 1);
+  margin-top: 2rem;
+}
+
+.signup a {
+  color: rgba(243, 244, 246, 1);
+  font-size: 1.6rem;
+  text-decoration: none;
+}
+
+.signup a:hover {
+  text-decoration: underline rgba(167, 139, 250, 1);
+}
+
+/* SEPARADOR SOCIAL */
+.social-message {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0 1rem;
+}
+
+.line {
+  flex: 1;
+  height: 0.2rem;
+  background-color: rgba(55, 65, 81, 1);
+}
+
+.social-message .message {
+  font-size: 1.4rem;
+  color: rgba(156, 163, 175, 1);
+  padding: 0 1.2rem;
+}
+
+/* ICONOS SOCIALES */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.social-icons .icon {
+  background: transparent;
+  border: none;
+  margin: 0 1rem;
+  font-size: 3rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Estilos generales */
+form {
+  transition: box-shadow 0.3s ease;
+}
+
+/* Éxito al enviar */
+form.success {
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+  border: 2px solid #28a745;
+}
+
+/* Input wrapper opcional si deseas ajustar márgenes o diseño */
+.input-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+/* Estilo para el mensaje de error */
+.error-message {
+  color:var(--rojo-alert);
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  display: block;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Icono de validación */
+.validation-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #2ecc71;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Animación de shake */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+  border: 1px solid var(--rojo-alert);
+  box-shadow: 0 0 4px rgba(231, 76, 60, 0.6);
+}
+
+/* Animación de entrada del mensaje de error */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .form-container {
+    width: 90%;
+    padding: 2rem;
+  }
+  .title { font-size: 2rem; line-height: 2.4rem; }
+  .input-wrapper input { font-size: 1.6rem; padding: 1rem 1.2rem; padding-right: 3.5rem; }
+  .input-group label { font-size: 1.2rem; margin-bottom: 0.6rem; }
+  .sign { font-size: 1.8rem; padding: 1rem; }
+  .social-icons .icon { font-size: 2.4rem; margin: 0 0.8rem; }
+  .signup, .social-message .message { font-size: 1.2rem; }
+}
+
+@media (max-width: 480px) {
+  .form-container { width: 100%; padding: 1.5rem; border-radius: 0.8rem; }
+  .title { font-size: 1.8rem; line-height: 2.2rem; margin-bottom: 1.5rem; }
+  .input-wrapper input { font-size: 1.4rem; padding: 0.8rem 1rem; padding-right: 3rem; }
+  .input-group label { font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .sign { font-size: 1.6rem; padding: 0.8rem; }
+  .social-icons .icon { font-size: 2rem; margin: 0 0.6rem; }
+  .signup, .social-message .message { font-size: 1.2rem; }
+}
+

@@ -1,0 +1,171 @@
+/* panel_productos.css */
+
+/* Botón Crear Producto en esquina superior derecha */
+.dashboard-content {
+    position: relative; /* Para que el botón se posicione relativo a este contenedor */
+
+}
+/* Contenedor de los botones */
+.botones-superiores {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  z-index: 2;
+}
+
+/* Estilos generales */
+.btn-crear-producto,
+.btn-descargar-reporte {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  border-radius: 0.8rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botón Crear (naranja vibrante) */
+.btn-crear-producto {
+  background-color: #ff5722; /* Naranja */
+}
+
+.btn-crear-producto:hover {
+  background-color: #e64a19;
+  transform: translateY(-1px);
+}
+
+/* Botón Descargar (púrpura) */
+.btn-descargar-reporte {
+  background-color: #673ab7; /* Púrpura */
+}
+
+.btn-descargar-reporte:hover {
+  background-color: #512da8;
+  transform: translateY(-1px);
+}
+
+/* Iconos */
+.btn-crear-producto i,
+.btn-descargar-reporte i {
+  font-size: 1.5rem;
+}
+
+/* panel_productos.css */
+
+/* Contenedor del grid con 4 filas visibles sí o sí */
+.productos-admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 1rem;
+    max-height: calc(260px * 4); /* Alto exacto por tarjeta x 4 filas */
+    padding-right: 0.5rem; /* espacio para scroll */
+}
+
+/* Tarjeta tipo "card" con alto fijo */
+.admin-producto-card {
+    background-color: #1e1e1e;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 34.5rem; /* Alto fijo para mantener 4 filas visibles */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-producto-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.admin-producto-card h4 {
+    margin: 0.5rem 0;
+    color: #f1f1f1;
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.admin-producto-card p {
+    margin: 0.25rem 0;
+    color: #cccccc;
+    font-size: 1.2rem;
+    line-height: 1.2;
+}
+
+/* Imagen dentro de la card */
+.admin-producto-img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #333;
+}
+
+/* Contenedor de los botones */
+.acciones-producto {
+    margin-top: 0.5rem;
+}
+
+/* Botones */
+.btn-editar,
+.btn-eliminar {
+    display: inline-block;
+    padding: 0.4rem 0.7rem;
+    margin: 0 0.25rem;
+    border-radius: 0.3rem;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: #fff;
+    transition: background-color 0.2s ease;
+    border: none;
+    cursor: pointer;
+    
+}
+
+.btn-editar {
+    background-color: var(--morado-mega-oscuro);
+}
+
+.btn-editar:hover {
+    background-color: var(--morado-claro);
+    color: var(--black-);
+}
+
+.btn-eliminar {
+    background-color: #f44336;
+}
+
+.btn-eliminar:hover {
+    background-color: #d32f2f;
+}
+
+/* Scroll personalizado opcional */
+.productos-admin-grid::-webkit-scrollbar {
+    width: 6px;
+}
+.productos-admin-grid::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 3px;
+}
+.productos-admin-grid::-webkit-scrollbar-thumb:hover {
+    background-color: #777;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .productos-admin-grid {
+        grid-template-columns: 1fr;
+    }
+}

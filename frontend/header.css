@@ -1,0 +1,218 @@
+/* Estilos generales del header */
+.header {
+    background-color: var(--morado-mega-oscuro);
+    padding: 1.5rem 2rem;
+    box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.15);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+    border-bottom: 0.2rem solid transparent;
+}
+
+/* animación de borde inferior al hacer scroll */
+.header.scrolled {
+    padding: 1rem 2rem;
+    border-color: var(--morado-claro);
+}
+
+/* Contenedor interno */
+.header__container {
+    max-width: 120rem;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Logo con brillo suave */
+.header__logo i {
+    font-size: 3rem;
+    color: var(--morado-claro);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+.header__logo i:hover {
+    transform: scale(1.1);
+    filter: brightness(1.4);
+}
+
+/* Título animado */
+.header__title-text {
+    font-family: var(--font-);
+    font-size: var(--font-max);
+    color: var(--white-);
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    margin: 0;
+    position: relative;
+    transition: color 0.3s ease;
+}
+.header__title-text::after {
+    content: "";
+    position: absolute;
+    bottom: -0.4rem;
+    left: 0;
+    width: 0;
+    height: 0.3rem;
+    background-color: var(--morado-claro);
+    transition: width 0.3s ease;
+}
+.header__title-text:hover::after {
+    width: 100%;
+}
+
+/* Acciones */
+.header__actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+/* Acción individual */
+.header__action {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-);
+    font-size: var(--font-min);
+    text-decoration: none;
+    color: var(--azul-claro);
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    transition: all 0.3s ease;
+}
+.header__action:hover {
+    color: var(--white-);
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
+}
+.header__action i {
+    font-size: 2rem;
+    transition: transform 0.3s ease;
+}
+.header__action:hover i {
+    transform: rotate(5deg);
+}
+
+/* Saludo usuario */
+.header__user {
+    display: inline-block;
+    margin-right: 1.6rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: rgba(243, 244, 246, 1);
+    background-color: rgba(74, 222, 128, 0.1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    transition: background-color 0.3s ease;
+}
+.header__user:hover {
+    background-color: rgba(74, 222, 128, 0.2);
+}
+
+/* Panel Admin */
+.header__action.admin-panel {
+    background-color: #ff5733;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    font-weight: bold;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.header__action.admin-panel:hover {
+    background-color: #e94e2b;
+    transform: translateY(-2px);
+}
+
+/* Saludo admin */
+.header__user.admin {
+    background-color: #f6b93b;
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Menú hamburguesa */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 2000;
+}
+
+.hamburger span {
+    width: 2.5rem;
+    height: 0.3rem;
+    background-color: var(--morado-claro);
+    border-radius: 0.2rem;
+}
+.header__cart {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: red;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50%;
+  min-width: 2rem;
+  text-align: center;
+  line-height: 1.2;
+  box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  animation: aparecerBadge 0.3s ease-out;
+}
+
+@keyframes aparecerBadge {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Menu en pantalla pequeña (hamburguesa visible) */
+@media (max-width: 768px) {
+    .header__actions {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        position: absolute;
+        top: 4rem;
+        right: 2rem;
+        background-color: var(--morado-mega-oscuro);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .header__actions.show {
+        display: flex;
+    }
+
+    /* Mostrar el botón hamburguesa */
+    .hamburger {
+        display: flex;
+    }
+}

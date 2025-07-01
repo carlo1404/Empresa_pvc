@@ -1,0 +1,8 @@
+# habilita mod_rewrite
+RewriteEngine On
+
+# define la página por defecto
+DirectoryIndex index.php index.html
+
+# evita que la raíz redirija al OAuth
+# aquí no ponemos ninguna regla que afecte a la ruta vacía (^$)

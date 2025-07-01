@@ -1,0 +1,26 @@
+:root{
+    /* primary color */
+    --azul-claro: #eefaff;
+    --azul-medio:#afe8ff;
+    --morado-medio: #e2afff;
+    --morado-claro: #f4e2fe;
+    --morado-claro-min: #fbecff;
+    --morado-mega-oscuro:#210532;
+    --bg-sidebar-hover: #2a2545;
+    --rojo-alert:#ff0000;
+
+    /* clasic */
+    --black-:#000;
+    --white-:#fff;
+
+    /* font-zise */
+    --font-max:3.2rem; /*recomendado para titulo o h1 */
+    --font-medio-max:2.4rem;
+    --font-medio:2rem;
+    --font-medio-min:1.8rem;
+    --font-min:1.6rem; /*se usa para nav o links  */
+    --font-min-max:1.4rem;
+
+    /* font-family */
+    --font-:Helvetica, Arial, sans-serif !important;
+}
