@@ -1,9 +1,7 @@
 <div align="center">
   <img src="https://img.icons8.com/color/96/000000/pvc-pipe.png" alt="PVC Logo" width="120"/>
-  
-  <h1>PVC Project</h1>
-  <p><b>Plataforma elegante y moderna para la gestión y venta de productos de PVC</b></p>
-  
+  <h1><b>PVC Project</b></h1>
+  <p><b>Plataforma moderna y optimizada para la gestión y venta de productos de PVC</b></p>
   <p>
     <img src="https://img.shields.io/badge/Frontend-HTML%2FCSS%2FJS-blue?style=for-the-badge"/>
     <img src="https://img.shields.io/badge/Backend-PHP-green?style=for-the-badge"/>
@@ -14,25 +12,26 @@
 
 ---
 
-## ✨ Descripción
+## 📝 Descripción General
 
-PVC Project es una plataforma web responsiva y visualmente atractiva para la gestión, visualización y venta de productos de PVC. Incluye autenticación segura, panel de administración, carrito de compras y un frontend moderno.
+**PVC Project** es una plataforma web responsiva, eficiente y visualmente atractiva para la gestión, visualización y venta de productos de PVC. Incluye autenticación segura, panel de administración, carrito de compras optimizado y un frontend moderno, pensado para funcionar perfectamente en dispositivos móviles y equipos de gama baja.
 
 ---
 
-## 🚀 Características principales
+## 🚩 Características Destacadas
 
-- **Frontend atractivo y responsivo** (HTML5, CSS3, JS)
+- **Frontend moderno y responsivo** (HTML5, CSS3, JS)
 - **Catálogo de productos** con imágenes, descripciones y categorías
 - **Buscador global** instantáneo
-- **Carrito de compras** interactivo
+- **Carrito de compras interactivo y ultra-ligero** (auto-añadido, mobile friendly)
 - **Descuentos destacados**
 - **Login seguro** (tradicional y Google OAuth 2.0)
 - **Panel de administración** para gestión avanzada
+- **Optimización para móviles y bajo consumo de recursos**
 
 ---
 
-## 🖼️ Interfaz de usuario
+## 🖥️ Interfaz de Usuario
 
 <div align="center">
   <img src="img/Designer.png" alt="Vista principal" width="60%"/>
@@ -52,43 +51,39 @@ PVC Project es una plataforma web responsiva y visualmente atractiva para la ges
 
 ---
 
-## 🎬 Demo interactivo
-
-<div align="center">
-  <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2J2d3F2b2Z2d3F2b2Z2d3F2b2Z2d3F2b2Z2d3F2b2Z2d3F2/giphy.gif" alt="Demo" width="60%"/>
-</div>
-
----
-
-## 📹 Video demo
+## 🎥 Demo
 
 <div align="center">
   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
     <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/0.jpg" alt="Demo YouTube" width="400"/>
     <br>
-    <b>Ver video en YouTube</b>
+    <b>Ver demo en YouTube</b>
   </a>
 </div>
 
 ---
 
-## 💡 Ejemplo de interactividad con JavaScript
+## 🛠️ Tecnologías Utilizadas
 
-```js
-// Buscador interactivo de productos
-const input = document.getElementById('buscador-global');
-input.addEventListener('input', function() {
-  const query = this.value.toLowerCase();
-  document.querySelectorAll('.productoss__cards').forEach(card => {
-    const nombre = card.querySelector('.productoss__nombre').textContent.toLowerCase();
-    card.style.display = nombre.includes(query) ? '' : 'none';
-  });
-});
-```
+- **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+- **Backend:** PHP 8+
+- **Base de datos:** MySQL (vía PDO)
+- **Autenticación:** Google OAuth 2.0
+- **Dependencias:** Composer
 
 ---
 
-## 📁 Estructura del proyecto
+## 📦 Instalación Rápida
+
+1. **Clona** este repositorio en tu servidor local (XAMPP recomendado).
+2. Ejecuta `composer install` para instalar las dependencias PHP.
+3. Configura tu base de datos y ajusta los datos de conexión en `conexion.php`.
+4. Registra tu URI de redirección en Google Cloud Console para el login con Google.
+5. Accede a `http://localhost/pvc_project/` en tu navegador.
+
+---
+
+## 📁 Estructura del Proyecto
 
 ```text
 pvc_project/
@@ -100,7 +95,7 @@ pvc_project/
 │   │   └── variables.css
 │   └── js/
 │       ├── buscador.js
-│       ├── carousel.js
+│       ├── carrito.js
 │       └── ...
 ├── img/
 ├── php/
@@ -115,50 +110,33 @@ pvc_project/
 
 ---
 
-## 🛠️ Tecnologías utilizadas
+## 🔒 Seguridad y Buenas Prácticas
 
-- **HTML5, CSS3, JavaScript**
-- **PHP 8+**
-- **Google OAuth 2.0**
-- **MySQL** (vía PDO)
-- **Composer** para dependencias
-
----
-
-## 📦 Instalación rápida
-
-1. Clona el repositorio en tu servidor local (XAMPP recomendado).
-2. Ejecuta `composer install` para instalar dependencias PHP.
-3. Configura tu base de datos y ajusta los datos de conexión en `conexion.php`.
-4. Registra tu URI de redirección en Google Cloud Console para el login con Google.
-5. Accede a `http://localhost/pvc_project/` en tu navegador.
-
----
-
-## 🔒 Seguridad y buenas prácticas
-
-- **Nunca subas tus secrets (Client ID/Secret) al repositorio.** Usa archivos ignorados como `config_oauth.php`.
+- **Nunca subas tus secretos (Client ID/Secret) al repositorio.** Usa archivos ignorados como `config_oauth.php`.
 - **Utiliza HTTPS** en producción para proteger los datos de tus usuarios.
 - **Actualiza dependencias** regularmente con Composer.
 - **Haz backup de tu base de datos** periódicamente.
 
 ---
 
-## 📸 Vista previa adicional
+## 📱 Optimización para Móviles y Rendimiento
 
-<div align="center">
-  <img src="img/fondo.jpg" alt="Fondo elegante" width="300"/>
-  <img src="img/hombre.jpeg" alt="Ejemplo de usuario" width="300"/>
-</div>
+- **Carrito ultra-ligero**: Sin animaciones pesadas ni efectos complejos
+- **Carga rápida** y bajo consumo de recursos
+- **Interfaz adaptada** para pantallas pequeñas
+- **Funciona perfectamente en dispositivos de gama baja**
+
+---
+
+## 👨‍💻 Autor
+
+**Carlos Reyes**  
+[LinkedIn](https://www.linkedin.com/in/tu-perfil) | [GitHub](https://github.com/carlo1404) | [Email](mailto:brunoreyes150@gmail.com)
 
 ---
 
 <div align="center">
   <b>© 2024 Carlos Reyes</b><br>
-  Este proyecto es de uso personal y educativo. Todos los derechos reservados.<br><br>
+  Este proyecto es de uso personal y educativo. Todos los derechos reservados.<br>
   <b>¡Gracias por usar y contribuir a PVC Project!</b>
-  <br><br>
-  <a href="https://www.linkedin.com/in/tu-perfil" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-blue?logo=linkedin&style=for-the-badge"/></a>
-  <a href="https://github.com/carlo1404" target="_blank"><img src="https://img.shields.io/badge/GitHub-black?logo=github&style=for-the-badge"/></a>
-  <a href="mailto:brunoreyes150@gmail.com" target="_blank"><img src="https://img.shields.io/badge/Email-red?logo=gmail&style=for-the-badge"/></a>
 </div> 
