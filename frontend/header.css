@@ -165,31 +165,15 @@
 
 .cart-badge {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  background-color: red;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 0.2rem 0.5rem;
+  top: -8px;
+  right: -8px;
+  background: #e53935;
+  color: #fff;
   border-radius: 50%;
-  min-width: 2rem;
-  text-align: center;
-  line-height: 1.2;
-  box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.3);
-  z-index: 10;
-  animation: aparecerBadge 0.3s ease-out;
-}
-
-@keyframes aparecerBadge {
-  0% {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  padding: 2px 7px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(229,57,53,0.15);
 }
 
 /* Menu en pantalla pequeña (hamburguesa visible) */
@@ -215,4 +199,71 @@
     .hamburger {
         display: flex;
     }
+}
+
+/* Dropdown del carrito */
+.cart-dropdown {
+  position: absolute;
+  right: 2rem;
+  top: 4.5rem;
+  width: 320px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  z-index: 1000;
+  padding: 0;
+  animation: fadeInCart 0.2s;
+}
+
+@keyframes fadeInCart {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.cart-dropdown__content {
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+}
+
+.cart-dropdown__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 1rem;
+}
+.cart-dropdown__item:last-child {
+  border-bottom: none;
+}
+.cart-dropdown__nombre {
+  font-weight: 500;
+  color: #222;
+}
+.cart-dropdown__cantidad {
+  color: #888;
+  margin: 0 0.5rem;
+}
+.cart-dropdown__precio {
+  color: #1e88e5;
+  font-weight: 600;
+}
+.cart-dropdown__empty {
+  text-align: center;
+  color: #aaa;
+  padding: 1.5rem 0;
+}
+.cart-dropdown__vermas {
+  display: block;
+  margin: 1rem auto 0 auto;
+  text-align: center;
+  background: #1e88e5;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.cart-dropdown__vermas:hover {
+  background: #1565c0;
 }

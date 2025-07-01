@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Carrito Automático</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .producto {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            position: relative;
+        }
+        .btn-carrito {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+        .btn-carrito:hover {
+            background: #0056b3;
+        }
+        .btn-carrito:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .cart-badge {
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .info-box {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .info-box h3 {
+            margin: 0 0 10px 0;
+            color: #0066cc;
+        }
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .info-box li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚀 Test del Carrito Automático</h1>
+        
+        <div class="info-box">
+            <h3>¿Cómo funciona?</h3>
+            <ul>
+                <li><strong>Hover/Focus:</strong> Pasa el mouse sobre un botón o haz focus para iniciar el countdown</li>
+                <li><strong>Auto-añadido:</strong> El producto se añadirá automáticamente después de 4 segundos</li>
+                <li><strong>Cancelar:</strong> Haz click en ✕ para cancelar el auto-añadido</li>
+                <li><strong>Click manual:</strong> Haz click en el botón para añadir inmediatamente</li>
+                <li><strong>Posicionamiento:</strong> El indicador aparece encima del botón sin tapar información</li>
+            </ul>
+        </div>
+        
+        <p><strong>Carrito:</strong> <span id="cart-count">0</span> productos</p>
+        
+        <div class="producto">
+            <h3>🛠️ Producto 1 - Tubo PVC</h3>
+            <p>Precio: $15.000</p>
+            <p>Descripción: Tubo de PVC resistente para instalaciones hidráulicas. Ideal para proyectos domésticos e industriales.</p>
+            <input type="number" id="cantidad_1" value="1" min="1" style="width: 60px; margin-right: 10px;">
+            <button class="btn-carrito" data-id="1" data-nombre="Tubo PVC" data-precio="15000">
+                Añadir al carrito
+            </button>
+        </div>
+        
+        <div class="producto">
+            <h3>🔧 Producto 2 - Conector</h3>
+            <p>Precio: $8.000</p>
+            <p>Descripción: Conector de alta calidad para unir tubos PVC. Fácil instalación y sellado perfecto.</p>
+            <input type="number" id="cantidad_2" value="1" min="1" style="width: 60px; margin-right: 10px;">
+            <button class="btn-carrito" data-id="2" data-nombre="Conector" data-precio="8000">
+                Añadir al carrito
+            </button>
+        </div>
+        
+        <div class="producto">
+            <h3>🚰 Producto 3 - Válvula</h3>
+            <p>Precio: $25.000</p>
+            <p>Descripción: Válvula de control para sistemas de agua. Control preciso del flujo y durabilidad garantizada.</p>
+            <input type="number" id="cantidad_3" value="1" min="1" style="width: 60px; margin-right: 10px;">
+            <button class="btn-carrito" data-id="3" data-nombre="Válvula" data-precio="25000">
+                Añadir al carrito
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Sistema de carrito automático
+        class AutoCart {
+          constructor() {
+            this.timers = new Map();
+            this.processingButtons = new Set();
+            this.autoAddDelay = 4000;
+            this.init();
+          }
+
+          init() {
+            const buttons = document.querySelectorAll('.btn-carrito');
+            buttons.forEach(btn => this.setupAutoAdd(btn));
+            this.addStyles();
+          }
+
+          setupAutoAdd(btn) {
+            const id = btn.getAttribute('data-id');
+            const nombre = btn.getAttribute('data-nombre');
+            const precio = parseFloat(btn.getAttribute('data-precio'));
+            
+            const indicatorContainer = document.createElement('div');
+            indicatorContainer.className = 'auto-cart-indicator';
+            indicatorContainer.innerHTML = `
+              <div class="auto-cart-progress">
+                <div class="auto-cart-progress-bar"></div>
+              </div>
+              <span class="auto-cart-text">Se añadirá automáticamente en <span class="auto-cart-countdown">4</span>s</span>
+              <button class="auto-cart-cancel" title="Cancelar añadido automático">✕</button>
+            `;
+            
+            // Insertar al final del body para evitar problemas de posicionamiento
+            document.body.appendChild(indicatorContainer);
+            indicatorContainer.style.display = 'none';
+            
+            let countdown = 4;
+            let timer = null;
+            
+            // Función para posicionar el indicador
+            const positionIndicator = () => {
+              const btnRect = btn.getBoundingClientRect();
+              const indicator = indicatorContainer;
+              
+              // Posicionar el indicador encima del botón
+              indicator.style.position = 'fixed';
+              indicator.style.top = (btnRect.top - 60) + 'px';
+              indicator.style.left = btnRect.left + 'px';
+              indicator.style.width = btnRect.width + 'px';
+              indicator.style.zIndex = '9999';
+            };
+            
+            const startCountdown = () => {
+              if (this.timers.has(id)) return;
+              
+              positionIndicator();
+              indicatorContainer.style.display = 'flex';
+              countdown = 4;
+              
+              const countdownEl = indicatorContainer.querySelector('.auto-cart-countdown');
+              const progressBar = indicatorContainer.querySelector('.auto-cart-progress-bar');
+              
+              timer = setInterval(() => {
+                countdown--;
+                countdownEl.textContent = countdown;
+                
+                const progress = ((4 - countdown) / 4) * 100;
+                progressBar.style.width = progress + '%';
+                
+                if (countdown <= 0) {
+                  clearInterval(timer);
+                  this.addToCart(btn, id, nombre, precio);
+                  indicatorContainer.style.display = 'none';
+                }
+              }, 1000);
+              
+              this.timers.set(id, timer);
+            };
+            
+            const cancelAutoAdd = () => {
+              if (timer) {
+                clearInterval(timer);
+                this.timers.delete(id);
+              }
+              indicatorContainer.style.display = 'none';
+            };
+            
+            btn.addEventListener('mouseenter', startCountdown);
+            btn.addEventListener('focus', startCountdown);
+            
+            btn.addEventListener('mouseleave', cancelAutoAdd);
+            btn.addEventListener('blur', cancelAutoAdd);
+            
+            const cancelBtn = indicatorContainer.querySelector('.auto-cart-cancel');
+            cancelBtn.addEventListener('click', cancelAutoAdd);
+            
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              cancelAutoAdd();
+              this.addToCart(btn, id, nombre, precio);
+            });
+            
+            // Reposicionar en scroll y resize
+            window.addEventListener('scroll', () => {
+              if (indicatorContainer.style.display === 'flex') {
+                positionIndicator();
+              }
+            });
+            
+            window.addEventListener('resize', () => {
+              if (indicatorContainer.style.display === 'flex') {
+                positionIndicator();
+              }
+            });
+          }
+
+          addToCart(btn, id, nombre, precio) {
+            if (this.processingButtons.has(id)) return;
+            this.processingButtons.add(id);
+            
+            const cantidadInput = document.getElementById('cantidad_' + id);
+            const cantidad = cantidadInput ? parseInt(cantidadInput.value) : 1;
+            
+            btn.disabled = true;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner"></span> Añadiendo...';
+            
+            const currentCount = parseInt(document.getElementById('cart-count').textContent || '0');
+            this.updateCartCount(currentCount + cantidad);
+            
+            fetch('php/carrito.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id, nombre, precio, cantidad })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.ok) {
+                this.showToast('Producto añadido al carrito', 'success');
+              } else {
+                const currentCount = parseInt(document.getElementById('cart-count').textContent || '0');
+                this.updateCartCount(currentCount - cantidad);
+                this.showToast('Error al añadir al carrito', 'error');
+              }
+            })
+            .catch(error => {
+              const currentCount = parseInt(document.getElementById('cart-count').textContent || '0');
+              this.updateCartCount(currentCount - cantidad);
+              this.showToast('Error de red', 'error');
+              console.error('Error:', error);
+            })
+            .finally(() => {
+              btn.disabled = false;
+              btn.innerHTML = originalText;
+              this.processingButtons.delete(id);
+            });
+          }
+
+          updateCartCount(count) {
+            const cartCount = document.getElementById('cart-count');
+            cartCount.textContent = count;
+            cartCount.style.transform = 'scale(1.2)';
+            setTimeout(() => cartCount.style.transform = '', 200);
+          }
+
+          showToast(message, type = 'success') {
+            const existingToasts = document.querySelectorAll('.toast');
+            existingToasts.forEach(toast => toast.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+              toast.classList.remove('show');
+              setTimeout(() => toast.remove(), 300);
+            }, 2000);
+          }
+
+          addStyles() {
+            const style = document.createElement('style');
+            style.innerHTML = `
+              .auto-cart-indicator {
+                display: none;
+                align-items: center;
+                gap: 8px;
+                padding: 8px 12px;
+                background: #ffffff;
+                border: 2px solid #007bff;
+                border-radius: 8px;
+                font-size: 13px;
+                color: #333;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                backdrop-filter: blur(10px);
+                position: fixed;
+                z-index: 9999;
+                min-width: 200px;
+                max-width: 300px;
+              }
+              
+              .auto-cart-progress {
+                width: 50px;
+                height: 4px;
+                background: #e9ecef;
+                border-radius: 2px;
+                overflow: hidden;
+                flex-shrink: 0;
+              }
+              
+              .auto-cart-progress-bar {
+                height: 100%;
+                background: #007bff;
+                width: 0%;
+                transition: width 0.3s ease;
+              }
+              
+              .auto-cart-text {
+                flex: 1;
+                font-size: 12px;
+                font-weight: 500;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              }
+              
+              .auto-cart-countdown {
+                font-weight: bold;
+                color: #007bff;
+                font-size: 14px;
+              }
+              
+              .auto-cart-cancel {
+                background: none;
+                border: none;
+                color: #6c757d;
+                cursor: pointer;
+                font-size: 14px;
+                padding: 2px 4px;
+                border-radius: 3px;
+                transition: all 0.2s;
+                flex-shrink: 0;
+                line-height: 1;
+              }
+              
+              .auto-cart-cancel:hover {
+                background: #e9ecef;
+                color: #495057;
+                transform: scale(1.1);
+              }
+              
+              @media (max-width: 768px) {
+                .auto-cart-indicator {
+                  flex-direction: column;
+                  gap: 6px;
+                  text-align: center;
+                  min-width: 180px;
+                  max-width: 250px;
+                  padding: 10px;
+                }
+                
+                .auto-cart-progress {
+                  width: 100%;
+                  max-width: 100px;
+                }
+                
+                .auto-cart-text {
+                  font-size: 11px;
+                }
+              }
+              
+              .auto-cart-indicator {
+                pointer-events: auto;
+              }
+              
+              .auto-cart-indicator * {
+                pointer-events: auto;
+              }
+            `;
+            document.head.appendChild(style);
+          }
+        }
+
+        // Inicializar cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            new AutoCart();
+          });
+        } else {
+          new AutoCart();
+        }
+    </script>
+</body>
+</html> 

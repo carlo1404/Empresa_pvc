@@ -18,6 +18,7 @@ $resultado = $stmt->fetchAll();
     <link rel="stylesheet" href="frontend/index.css">
     <link rel="stylesheet" href="frontend/header.css">
     <link rel="stylesheet" href="frontend/component/main.css">
+    <link rel="stylesheet" href="frontend/component/carrito-optimizado.css">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     
     <!-- Fuentes -->
@@ -30,7 +31,7 @@ $resultado = $stmt->fetchAll();
     <script defer src="frontend/js/calificacion.js"></script>
     <script defer src="frontend/js/productos.js"></script>
     <script defer src="frontend/js/stock.js"></script>
-    <script defer src="frontend/js/carrito.php"></script>
+    <script defer src="frontend/js/carrito.js"></script>
     <script defer src="frontend/js/buscador.js"></script>
     <!-- <script defer src="frontend/js/menu.js"></script> -->
 
@@ -103,10 +104,10 @@ $resultado = $stmt->fetchAll();
       <i class='bx bx-purchase-tag'></i> <!-- Aquí puedes colocar el ícono que prefieras -->
       </div>
 
-      <img src="img/imagen1.jpg" alt="Conector PVC 3/4”">
+      <img src="img/imagen1.jpg" alt="Conector PVC 3/4">
 
       <div class="producto__contenido">
-        <h2 class="producto__nombre">Conector PVC 3/4”</h2>
+        <h2 class="producto__nombre">Conector PVC 3/4</h2>
         <p class="producto__descripcion">
           Conector resistente para instalaciones hidráulicas en PVC, ideal para proyectos domésticos o industriales.
         </p>
@@ -124,11 +125,14 @@ $resultado = $stmt->fetchAll();
 
         <!-- Cantidad -->
         <div class="cantidad">
-          <label for="cantidad1">Cantidad:</label>
-          <input type="number" id="cantidad1" name="cantidad1" min="1" value="1">
+          <label for="cantidad_1">Cantidad:</label>
+          <input type="number" id="cantidad_1" name="cantidad_1" min="1" value="1">
         </div>
 
-        <button class="btn-carrito">
+        <button class="productoss_btn-carrito"
+                data-id="1"
+                data-nombre="Conector PVC 3/4"
+                data-precio="16000">
           <i class='bx bxs-cart'></i> <span>Añadir al carrito</span>
         </button>
       </div>
@@ -167,12 +171,9 @@ $resultado = $stmt->fetchAll();
   <!-- Productos -->
   <div class="productoss__grid">
     <?php
-    include 'conexion.php';
-    $sql = "SELECT * FROM productos";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    $resultado = $stmt->fetchAll();
+    $producto_descuento_id = 1; // El id del producto en descuento
     foreach ($resultado as $producto) :
+      if ($producto['id'] == $producto_descuento_id) continue;
     ?>
       <div class="productoss__cards">
         <img src="uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="Producto" class="productoss__imagen">
@@ -193,19 +194,19 @@ $resultado = $stmt->fetchAll();
         <div class="productoss__acciones">
           <label for="cantidad_<?php echo $producto['id']; ?>">Cantidad:</label>
           <input type="number"
-                 id="cantidad_<?php echo $producto['id']; ?>"
-                 name="cantidad_<?php echo $producto['id']; ?>"
-                 min="1"
-                 max="<?php echo $producto['stock']; ?>"
-                 value="1">
+                  id="cantidad_<?php echo $producto['id']; ?>"
+                  name="cantidad_<?php echo $producto['id']; ?>"
+                  min="1"
+                  max="<?php echo $producto['stock']; ?>"
+                  value="1">
 
-          <button class="productoss_btn-carrito" 
-                  data-id="<?php echo $producto['id']; ?>" 
+          <button class="productoss_btn-carrito"
+                  data-id="<?php echo $producto['id']; ?>"
                   data-nombre="<?php echo htmlspecialchars($producto['nombre']); ?>"
                   data-precio="<?php echo $producto['precio']; ?>">
             <i class='bx bxs-cart'></i>
             <span>Añadir al carrito</span>
-          </button> 
+          </button>
 
           <a href="/php/ver_mas.php?id=<?php echo $producto['id']; ?>" class="productoss__btn-vermas">Ver más</a>
         </div>

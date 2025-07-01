@@ -38,7 +38,8 @@ if (isset($_SESSION['carrito'])) {
     }
 }
 
-// ...resto del código HTML...
+// Detectar si estamos en ver_carrito.php
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <header class="header">
   <div class="header__container">
@@ -78,11 +79,28 @@ if (isset($_SESSION['carrito'])) {
           <span>Iniciar sesión</span>
         </a>
       <?php endif; ?>
-      <a href="../ver_carrito.php" class="header__action header__cart">
+      <?php if ($current_page === 'ver_carrito.php'): ?>
+        <a href="ver_carrito.php" class="header__action header__cart">
           <i class='bx bx-shopping-bag'></i>
           <span>Carrito</span>
           <span class="cart-badge"><?php echo $total_items; ?></span>
-      </a>
+        </a>
+      <?php else: ?>
+        <a href="ver_carrito.php" class="header__action header__cart" id="cart-dropdown-toggle">
+          <i class='bx bx-shopping-bag'></i>
+          <span>Carrito</span>
+          <span class="cart-badge"><?php echo $total_items; ?></span>
+        </a>
+        <div id="cart-dropdown" class="cart-dropdown" style="display: none;">
+          <div class="cart-dropdown__content">
+            <h4>Carrito de compras</h4>
+            <div id="cart-items-container">
+              <p class="cart-dropdown__empty">Tu carrito está vacío.</p>
+            </div>
+            <a href="ver_carrito.php" class="cart-dropdown__vermas">Ver carrito completo</a>
+          </div>
+        </div>
+      <?php endif; ?>
       <a href="index.php" class="header__action">
         <i class='bx bxs-home'></i>
         <span>Inicio</span>
