@@ -89,5 +89,5 @@ if (isset($_SESSION['carrito'])) {
       </a>
     </div>
   </div>
-  <script src="../../pvc_project/frontend/js/menu.js" defer></script>
+  <script src="../pvc_project/frontend/js/menu.js" defer></script>
 </header>
