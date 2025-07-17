@@ -1,3 +1,21 @@
+let categoriaSeleccionada = null;
+
+// Manejar clic en categorías
+const categoriasNav = document.querySelector('.categorias-nav__lista');
+if (categoriasNav) {
+  categoriasNav.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A') {
+      e.preventDefault();
+      const categoria = e.target.textContent.trim().toLowerCase();
+      categoriaSeleccionada = categoria === 'todas' ? null : categoria;
+      filtrarProductos();
+      // Resaltar categoría activa
+      categoriasNav.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+      e.target.classList.add('active');
+    }
+  });
+}
+
 function filtrarProductos() {
   const input = document.getElementById('buscador-global');
   const filtro = input.value.toLowerCase();
@@ -7,32 +25,51 @@ function filtrarProductos() {
 
   let encontrados = 0;
 
-  // Mostrar loader y ocultar productos y mensaje vacío
   loader.style.display = 'flex';
   mensajeVacio.style.display = 'none';
   productos.forEach(producto => {
-    producto.style.display = 'none';
+    producto.style.opacity = 0;
+    producto.style.pointerEvents = 'none';
+    setTimeout(() => {
+      producto.style.display = 'none';
+    }, 200);
   });
 
-  // Simular "tiempo de carga"
   setTimeout(() => {
     productos.forEach(producto => {
       const nombre = producto.querySelector('.productoss__nombre').textContent.toLowerCase();
       const descripcion = producto.querySelector('.productoss__descripcion').textContent.toLowerCase();
+      const precio = producto.querySelector('.productoss__precio').getAttribute('data-precio');
+      const categoria = producto.getAttribute('data-categoria').toLowerCase();
 
-      if (nombre.includes(filtro) || descripcion.includes(filtro)) {
+      const coincideCategoria = !categoriaSeleccionada || categoria === categoriaSeleccionada;
+      const coincideFiltro = nombre.includes(filtro) || descripcion.includes(filtro) || precio.includes(filtro);
+
+      if (coincideCategoria && coincideFiltro) {
         producto.style.display = 'block';
+        setTimeout(() => {
+          producto.style.opacity = 1;
+          producto.style.pointerEvents = '';
+        }, 10);
         encontrados++;
       } else {
         producto.style.display = 'none';
       }
     });
-
-    // Ocultar loader
     loader.style.display = 'none';
-
-    // Mostrar mensaje si no hay resultados
     mensajeVacio.style.display = (encontrados === 0) ? 'flex' : 'none';
-
-  }, 300); // 300ms para darle suavidad
+  }, 300);
 }
+
+// Animaciones CSS
+const style = document.createElement('style');
+style.innerHTML = `
+.productoss__cards {
+  transition: opacity 0.2s;
+}
+.categorias-nav__lista a.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+`;
+document.head.appendChild(style);

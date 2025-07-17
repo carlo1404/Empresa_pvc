@@ -106,6 +106,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <span>Inicio</span>
       </a>
     </div>
+    <!-- Mover aquí el menú de categorías móvil -->
+    <ul class="header__categorias-movil" style="display: none;">
+    <?php
+    include_once __DIR__ . '/../../conexion.php';
+    $stmt = $pdo->query('SELECT * FROM categorias');
+    while ($cat = $stmt->fetch()) {
+      echo '<li><a href="#" class="header__categoria-link">' . htmlspecialchars($cat['nombre']) . '</a></li>';
+    }
+    ?>
+    </ul>
   </div>
   <script src="../pvc_project/frontend/js/menu.js" defer></script>
 </header>

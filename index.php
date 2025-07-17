@@ -175,7 +175,7 @@ $resultado = $stmt->fetchAll();
     foreach ($resultado as $producto) :
       if ($producto['id'] == $producto_descuento_id) continue;
     ?>
-      <div class="productoss__cards">
+      <div class="productoss__cards" data-categoria="<?php echo htmlspecialchars($producto['nombre_categoria']); ?>">
         <img src="uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="Producto" class="productoss__imagen">
         <h3 class="productoss__nombre"><?php echo htmlspecialchars($producto['nombre']); ?></h3>
         <p class="productoss__categoria">Categoría: <?php echo htmlspecialchars($producto['nombre']); ?></p>
@@ -189,7 +189,10 @@ $resultado = $stmt->fetchAll();
           <i class='bx bx-star' data-value="5"></i>
         </div>
 
-        <p class="productoss__precio">COP $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></p>
+        <div class="productoss__info-row">
+          <span class="productoss__precio" data-precio="<?php echo $producto['precio']; ?>">COP $<?php echo number_format($producto['precio'], 0, ',', '.'); ?></span>
+          <span class="productoss__stock<?php echo ($producto['stock'] <= 3 ? ' stock-bajo' : ''); ?>">Stock: <?php echo $producto['stock']; ?> disponible<?php echo $producto['stock'] == 1 ? '' : 's'; ?></span>
+        </div>
 
         <div class="productoss__acciones">
           <label for="cantidad_<?php echo $producto['id']; ?>">Cantidad:</label>

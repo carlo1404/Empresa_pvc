@@ -27,17 +27,80 @@ function cargarResumenCarrito() {
       const container = document.getElementById('cart-items-container');
       if (data.items && data.items.length > 0) {
         container.innerHTML = data.items.map(item => `
-          <div class="cart-dropdown__item">
+          <div class="cart-dropdown__item" data-id="${item.id}">
             <span class="cart-dropdown__nombre">${item.nombre}</span>
-            <span class="cart-dropdown__cantidad">x${item.cantidad}</span>
+            <input type="number" class="cart-dropdown__cantidad-input" min="1" value="${item.cantidad}" style="width:40px; margin:0 6px;">
             <span class="cart-dropdown__precio">$${item.precio.toLocaleString()}</span>
+            <button class="cart-dropdown__eliminar" title="Eliminar">&times;</button>
           </div>
         `).join('');
       } else {
         container.innerHTML = '<p class="cart-dropdown__empty">Tu carrito está vacío.</p>';
       }
+      // Agregar listeners para eliminar y cambiar cantidad
+      agregarListenersResumenCarrito();
     })
     .catch(error => console.error('Error:', error));
+}
+
+function agregarListenersResumenCarrito() {
+  const container = document.getElementById('cart-items-container');
+  if (!container) return;
+  // Eliminar producto
+  container.querySelectorAll('.cart-dropdown__eliminar').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const itemDiv = this.closest('.cart-dropdown__item');
+      const id = itemDiv.getAttribute('data-id');
+      eliminarProductoCarrito(id);
+    });
+  });
+  // Cambiar cantidad
+  container.querySelectorAll('.cart-dropdown__cantidad-input').forEach(input => {
+    input.addEventListener('change', function() {
+      const itemDiv = this.closest('.cart-dropdown__item');
+      const id = itemDiv.getAttribute('data-id');
+      let nuevaCantidad = parseInt(this.value);
+      if (isNaN(nuevaCantidad) || nuevaCantidad < 1) nuevaCantidad = 1;
+      this.value = nuevaCantidad;
+      cambiarCantidadCarrito(id, nuevaCantidad);
+    });
+  });
+}
+
+function eliminarProductoCarrito(id) {
+  fetch('php/carrito.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, eliminar: true })
+  })
+  .then(res => res.json())
+  .then(data => {
+    // Actualizar localStorage
+    let carritoLS = JSON.parse(localStorage.getItem('carrito')) || {};
+    delete carritoLS[id];
+    localStorage.setItem('carrito', JSON.stringify(carritoLS));
+    cargarResumenCarrito();
+    actualizarCarritoUI(data.total_items || 0);
+    showToast('Producto eliminado', 'success');
+  });
+}
+
+function cambiarCantidadCarrito(id, cantidad) {
+  fetch('php/carrito.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, cantidad, actualizar: true })
+  })
+  .then(res => res.json())
+  .then(data => {
+    // Actualizar localStorage
+    let carritoLS = JSON.parse(localStorage.getItem('carrito')) || {};
+    if (carritoLS[id]) carritoLS[id].cantidad = cantidad;
+    localStorage.setItem('carrito', JSON.stringify(carritoLS));
+    cargarResumenCarrito();
+    actualizarCarritoUI(data.total_items || 0);
+    showToast('Cantidad actualizada', 'success');
+  });
 }
 
 // Actualizar badge inmediatamente
@@ -174,7 +237,20 @@ class AutoCart {
     
     const cantidadInput = document.getElementById('cantidad_' + id);
     const cantidad = cantidadInput ? parseInt(cantidadInput.value) : 1;
+    const maxStock = cantidadInput ? parseInt(cantidadInput.max) : 999999;
+
+    // Obtener carrito de localStorage
+    let carritoLS = JSON.parse(localStorage.getItem('carrito')) || {};
+    let cantidadEnCarrito = carritoLS[id] ? carritoLS[id].cantidad : 0;
     
+    if (cantidadEnCarrito + cantidad > maxStock) {
+      showToast('Cantidad máxima alcanzada', 'error');
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bx bxs-cart"></i> <span>Añadir al carrito</span>';
+      this.processingButtons.delete(id);
+      return;
+    }
+
     btn.disabled = true;
     const originalText = btn.innerHTML;
     btn.innerHTML = '<span class="spinner-mini"></span>';
@@ -191,21 +267,27 @@ class AutoCart {
     .then(res => res.json())
     .then(data => {
       if (data.ok) {
+        // Actualizar localStorage
+        carritoLS[id] = carritoLS[id] || { nombre, precio, cantidad: 0 };
+        carritoLS[id].cantidad += cantidad;
+        localStorage.setItem('carrito', JSON.stringify(carritoLS));
         showToast('Producto añadido al carrito', 'success');
         if (cartDropdown && cartDropdown.style.display === 'block') {
           cargarResumenCarrito();
         }
+      } else if (data.error === 'stock') {
+        showToast('Cantidad máxima alcanzada', 'error');
       } else {
         actualizarCarritoUI(currentTotal);
         showToast('Error al añadir al carrito', 'error');
       }
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+      this.processingButtons.delete(id);
     })
-    .catch(error => {
+    .catch(() => {
       actualizarCarritoUI(currentTotal);
-      showToast('Error de red', 'error');
-      console.error('Error:', error);
-    })
-    .finally(() => {
+      showToast('Error al añadir al carrito', 'error');
       btn.disabled = false;
       btn.innerHTML = originalText;
       this.processingButtons.delete(id);
