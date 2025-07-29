@@ -26,7 +26,7 @@
       <ul>
         <li><a href="Gestion/gestion_productos.php"><i class='bx bx-box'></i> Productos</a></li>
         <li><a href="Gestion/producto_mas_vendido.php"><i class='bx bx-bar-chart-alt-2'></i> Más Vendido</a></li>
-        <li><a href="Gestion/gestion_categorias.php"><i class='bx bx-category'></i> Categorías</a></li>
+        <li><a href="categorias/gestion_categorias.php"><i class='bx bx-category'></i> Categorías</a></li>
         <li><a href="Gestion/gestion_usuarios.php"><i class='bx bx-user'></i> Usuarios</a></li>
         <li><a href="Gestion/realizar_pedidos.php"><i class='bx bx-cart'></i> Pedidos</a></li>
         <li><a href="Gestion/gestion_descuentos.php"><i class='bx bx-tag'></i> Descuentos</a></li>
@@ -40,7 +40,7 @@
       <div class="admin-quick">
         <a href="Gestion/gestion_productos.php"><i class='bx bx-box'></i><span>Productos</span></a>
         <a href="Gestion/producto_mas_vendido.php"><i class='bx bx-bar-chart-alt-2'></i><span>Más Vendido</span></a>
-        <a href="Gestion/gestion_categorias.php"><i class='bx bx-category'></i><span>Categorías</span></a>
+        <a href="categorias/gestion_categorias.php"><i class='bx bx-category'></i><span>Categorías</span></a>
         <a href="Gestion/gestion_usuarios.php"><i class='bx bx-user'></i><span>Usuarios</span></a>
         <a href="Gestion/realizar_pedidos.php"><i class='bx bx-cart'></i><span>Pedidos</span></a>
         <a href="Gestion/gestion_descuentos.php"><i class='bx bx-tag'></i><span>Descuentos</span></a>

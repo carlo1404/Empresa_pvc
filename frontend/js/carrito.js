@@ -407,3 +407,38 @@ if (document.readyState === 'loading') {
 } else {
   new AutoCart();
 }
+
+// Función global para agregar productos al carrito (compatible con categorías)
+function agregarAlCarrito(id, nombre, precio, cantidad = 1) {
+  console.log('agregarAlCarrito llamado con:', { id, nombre, precio, cantidad });
+  
+  // Crear instancia de AutoCart si no existe
+  if (!window.autoCart) {
+    window.autoCart = new AutoCart();
+    window.autoCart.init();
+  }
+  
+  // Simular un botón para usar con addToCart
+  const botonSimulado = {
+    getAttribute: (attr) => {
+      switch(attr) {
+        case 'data-id': return id;
+        case 'data-nombre': return nombre;
+        case 'data-precio': return precio;
+        default: return null;
+      }
+    }
+  };
+  
+  // Usar el sistema existente de addToCart
+  window.autoCart.addToCart(botonSimulado, id, nombre, precio);
+  
+  // Mostrar notificación
+  showToast(`Producto "${nombre}" agregado al carrito`, 'success');
+  
+  // Actualizar UI del carrito
+  setTimeout(() => {
+    cargarResumenCarrito();
+    actualizarCarritoUI();
+  }, 100);
+}
